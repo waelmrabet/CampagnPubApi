@@ -28,7 +28,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public List<BusinessTypeDto> GetAllBusinessTypes()
         {
-            var list = _businessTypeService.GetAll();
+            var list = _businessTypeService.GetAll().ToList();
             var result = _mapper.Map<List<BusinessTypeDto>>(list);
 
             return result;

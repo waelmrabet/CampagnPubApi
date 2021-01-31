@@ -9,7 +9,7 @@ namespace BL.ServicePattern
 {
     public class ServicePattern<T> : IServicePattern<T> where T : BaseEntity
     {
-        private readonly IRepository<T> _repo;  
+        protected readonly IRepository<T> _repo;  
         public ServicePattern(IRepository<T> repository)
         {
             _repo = repository;

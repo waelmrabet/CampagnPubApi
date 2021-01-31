@@ -13,7 +13,7 @@ namespace Data.Repositories.Impl
 
         public List<Town> GetFullTowns()
         {
-            return Entities.Include(x => x.Region).ToList();
+            return context.Set<Town>().Include(x => x.Region).ToList();           
         }
     }
 }

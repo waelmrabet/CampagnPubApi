@@ -9,6 +9,10 @@ namespace BL.Services.Impl
 {
     public class BusninessTypeService : ServicePattern<BusinessType>, IBusninessTypeService
     {
-        public BusninessTypeService(IBusninessTypeRepository businessTypeRepo): base(businessTypeRepo) { }    
+        private readonly IBusninessTypeRepository _businessTypeRepo;
+        public BusninessTypeService(IBusninessTypeRepository businessTypeRepo) : base(businessTypeRepo)
+        {
+            _businessTypeRepo = businessTypeRepo;
+        }
     }
 }

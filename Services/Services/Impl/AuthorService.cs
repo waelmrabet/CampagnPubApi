@@ -6,15 +6,13 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace BL.Services.Impl
-{    
-    public class AuthorService :  ServicePattern<Author>, IAuthorService
+{
+    public class AuthorService : ServicePattern<Author>, IAuthorService
     {
-        public AuthorService(IRepository<Author> authorRepo) : base(authorRepo) { }       
-
-        public void Fawzi()
+        private readonly IAuthorRepository _authorRepo;
+        public AuthorService(IAuthorRepository authorRepo) : base(authorRepo)
         {
-            
+            _authorRepo = authorRepo;
         }
-
     }
 }

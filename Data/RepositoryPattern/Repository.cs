@@ -10,13 +10,15 @@ namespace Data.Repositories.Impl
     {
         protected readonly MyDataBaseContext context;
         private DbSet<T> _entities;
+        /*
         public DbSet<T> Entities
         {
             get
             {
                 return this._entities;
             }
-        }        
+        }  
+        */
 
         string errorMessage = string.Empty;
 

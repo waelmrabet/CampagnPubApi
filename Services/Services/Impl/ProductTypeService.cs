@@ -9,6 +9,10 @@ namespace BL.Services.Impl
 {
     public class ProductTypeService : ServicePattern<ProductType>, IProductTypeService
     {
-        public ProductTypeService(IRepository<ProductType> productTypeRepo) : base(productTypeRepo) { }
+        private readonly IProductTypeRepository _productTypeRepo; 
+        public ProductTypeService(IProductTypeRepository productTypeRepo) : base(productTypeRepo)
+        {
+            _productTypeRepo = productTypeRepo;
+        }
     }
 }

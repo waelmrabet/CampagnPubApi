@@ -16,10 +16,9 @@ namespace BL.Services.Impl
         // get Towns with their region
         public List<Town> GetFullTowns()
         {
-            var list = _townRepo.GetFullTowns();
+            var list = _townRepo.GetFullTowns();            
             return list;
         }
-
         public List<Town> GetTownsByRegion(int regionId, bool fullEntity)
         {
             var list = fullEntity ? GetFullTowns() : GetAll().ToList();
