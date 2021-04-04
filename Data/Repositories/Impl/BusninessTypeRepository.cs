@@ -8,11 +8,16 @@ namespace Data.Repositories.Impl
 {
     public class BusninessTypeRepository : Repository<BusinessType>, IBusninessTypeRepository
     {
-        public BusninessTypeRepository(MyDataBaseContext ctx): base(ctx) { }        
+        public BusninessTypeRepository(MyDataBaseContext ctx): base(ctx) { }
+
+        public ICollection<BusinessType> GetActivatedBusinessTypes()
+        {            
+            return Entities.Where(x => x.Activated == true).ToList();
+        }
+
         public ICollection<BusinessType> GetBusinessInListMapCodes(List<string> businessTypesIds)
         {
-            var list = Entities.Where(x => businessTypesIds.Contains(x.MapCode)).ToList();
-            return list;
+            return Entities.Where(x => businessTypesIds.Contains(x.MapCode)).ToList();           
         }
     }
 }

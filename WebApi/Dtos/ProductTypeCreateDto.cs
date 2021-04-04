@@ -12,5 +12,7 @@ namespace WebApi.Dtos
         public SizeDto Size { get; set; }
         public string Color { get; set; }
         public string Description { get; set; }
+        public int DefaultNbrProductPerBusiness { get; set; }
+        
     }
 }

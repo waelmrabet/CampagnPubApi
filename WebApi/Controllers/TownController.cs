@@ -25,20 +25,20 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("fullEntity/{fullEntity}")]
-        public List<TownDto> getAllTowns(bool fullEntity)
+        public List<TownReadDto> getAllTowns(bool fullEntity)
         {
             var townsList = fullEntity ? _townService.GetFullTowns() :  _townService.GetAll().ToList();
-            var result = _mapper.Map<List<TownDto>>(townsList);
+            var result = _mapper.Map<List<TownReadDto>>(townsList);
 
             return result;
         }
 
         [HttpGet]
         [Route("TownsByRegion/{regionId}/{fullEntity}")]        
-        public List<TownDto> getTownByRegion(int regionId, bool fullEntity)
+        public List<TownReadDto> getTownByRegion(int regionId, bool fullEntity)
         {
             var listTowns = _townService.GetTownsByRegion(regionId, fullEntity);
-            var result = _mapper.Map<List<TownDto>>(listTowns);
+            var result = _mapper.Map<List<TownReadDto>>(listTowns);
 
             return result;
         }

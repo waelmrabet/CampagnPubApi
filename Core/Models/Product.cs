@@ -13,9 +13,8 @@ namespace Core.Models
 
         [ForeignKey(nameof(Campaign))]
         public int CampaignId { get; set; }
-
-
         public int NbrProductPerBusiness { get; set; }
+        public double FinalUnitPrice { get; set; }
 
         // navigation properties
         public ProductType ProductType { get; set; }

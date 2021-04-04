@@ -9,6 +9,7 @@ namespace Core.Models
 
         // properties
         public string Name { get; set; }
+        public bool Activated { get; set; }
 
         // navigation properties
         public virtual ICollection<Town> RegionTowns { get; set; }

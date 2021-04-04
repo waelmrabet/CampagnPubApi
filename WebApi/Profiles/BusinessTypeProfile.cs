@@ -13,10 +13,10 @@ namespace WebApi.Profiles
         public BusinessTypeProfile()
         {
             // intern to extern
-            CreateMap<BusinessType, BusinessTypeDto>();
+            CreateMap<BusinessType, BusinessTypeReadDto>();
            
             // extern to intern
-            CreateMap<BusinessTypeDto, BusinessType>();
+            CreateMap<BusinessTypeReadDto, BusinessType>();
         }
     }
 }

@@ -34,21 +34,6 @@ namespace Data.Migrations
                     b.ToTable("BusinessTypeCampaign");
                 });
 
-            modelBuilder.Entity("CampaignProductType", b =>
-                {
-                    b.Property<int>("ProductTypeCampaignsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductTypesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductTypeCampaignsId", "ProductTypesId");
-
-                    b.HasIndex("ProductTypesId");
-
-                    b.ToTable("CampaignProductType");
-                });
-
             modelBuilder.Entity("CampaignTown", b =>
                 {
                     b.Property<int>("CampaignTownsId")
@@ -70,6 +55,9 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
+
+                    b.Property<bool>("Activated")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
@@ -94,6 +82,9 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
+
+                    b.Property<int>("CampaignState")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -144,6 +135,14 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Core.Models.CampaignBusiness", b =>
                 {
+                    b.Property<int>("CampaignBusinessId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("BusinessTownId")
+                        .HasColumnType("int");
+
                     b.Property<int>("BusinessTypeId")
                         .HasColumnType("int");
 
@@ -153,7 +152,9 @@ namespace Data.Migrations
                     b.Property<int>("State")
                         .HasColumnType("int");
 
-                    b.HasKey("BusinessTypeId", "CompagnId");
+                    b.HasKey("CampaignBusinessId");
+
+                    b.HasIndex("BusinessTypeId");
 
                     b.HasIndex("CompagnId");
 
@@ -202,10 +203,7 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("CampaignBusinessBusinessTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CampaignBusinessCompagnId")
+                    b.Property<int?>("CampaignBusinessId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -222,7 +220,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CampaignBusinessBusinessTypeId", "CampaignBusinessCompagnId");
+                    b.HasIndex("CampaignBusinessId");
 
                     b.ToTable("Photos");
                 });
@@ -234,6 +232,9 @@ namespace Data.Migrations
 
                     b.Property<int>("ProductTypeId")
                         .HasColumnType("int");
+
+                    b.Property<double>("FinalUnitPrice")
+                        .HasColumnType("float");
 
                     b.Property<int>("NbrProductPerBusiness")
                         .HasColumnType("int");
@@ -257,6 +258,9 @@ namespace Data.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("DefaultNbrProductPerBusiness")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -282,6 +286,9 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<bool>("Activated")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -302,6 +309,9 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
+
+                    b.Property<bool>("Activated")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Borough")
                         .HasColumnType("nvarchar(max)");
@@ -332,6 +342,9 @@ namespace Data.Migrations
 
                     b.Property<int>("RegionId")
                         .HasColumnType("int");
+
+                    b.Property<string>("TownWording")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -397,21 +410,6 @@ namespace Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CampaignProductType", b =>
-                {
-                    b.HasOne("Core.Models.Campaign", null)
-                        .WithMany()
-                        .HasForeignKey("ProductTypeCampaignsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Models.ProductType", null)
-                        .WithMany()
-                        .HasForeignKey("ProductTypesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("CampaignTown", b =>
                 {
                     b.HasOne("Core.Models.Town", null)
@@ -464,9 +462,38 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("Core.Models.Place", "Place", b1 =>
+                        {
+                            b1.Property<int>("CampaignBusinessId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .UseIdentityColumn();
+
+                            b1.Property<double>("Lat")
+                                .HasColumnType("float");
+
+                            b1.Property<double>("Lng")
+                                .HasColumnType("float");
+
+                            b1.Property<string>("Name")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("PlaceId")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("CampaignBusinessId");
+
+                            b1.ToTable("CompaignBusinesses");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CampaignBusinessId");
+                        });
+
                     b.Navigation("BusinessType");
 
                     b.Navigation("Campaign");
+
+                    b.Navigation("Place");
                 });
 
             modelBuilder.Entity("Core.Models.Customer", b =>
@@ -506,7 +533,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("Core.Models.CampaignBusiness", "CampaignBusiness")
                         .WithMany("Photos")
-                        .HasForeignKey("CampaignBusinessBusinessTypeId", "CampaignBusinessCompagnId");
+                        .HasForeignKey("CampaignBusinessId");
 
                     b.Navigation("CampaignBusiness");
                 });

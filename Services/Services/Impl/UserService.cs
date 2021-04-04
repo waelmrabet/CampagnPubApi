@@ -9,7 +9,12 @@ namespace BL.Services.Impl
 {
     public class UserService : ServicePattern<User>, IUserService
     {
-        public UserService(IRepository<User> userRepo) : base(userRepo) { }
-    
+        private readonly IRepository<User> _userRepo;
+
+        public UserService(IRepository<User> userRepo) : base(userRepo)
+        {
+            _userRepo = userRepo;
+        }
+
     }
 }

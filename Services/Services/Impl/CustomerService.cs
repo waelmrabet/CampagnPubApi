@@ -9,9 +9,11 @@ namespace BL.Services.Impl
 {
     public class CustomerService : ServicePattern<Customer>, ICustomerService
     {
-        public CustomerService(IRepository<Customer> customerRepo) : base(customerRepo)
-        {
+        private readonly ICustomerRepository _customerRepo;
 
+        public CustomerService(ICustomerRepository customerRepo) : base(customerRepo)
+        {
+            _customerRepo = customerRepo;
         }
     }
 }

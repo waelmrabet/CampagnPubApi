@@ -44,41 +44,6 @@ namespace WebApi.Controllers
             var products = _mapper.Map<List<ProductTypeReadDto>>(productTypes);
             return products;
         }
-
-
-
-        /*
-        [HttpGet]
-        public List<UserReadDto> GetAllUsers()
-        {
-            var users = _productTypeService.GetAll().ToList();
-            var userList = _mapper.Map<List<UserReadDto>>(users);
-            return userList;
-        }
-
-        [HttpGet]
-        [Route("{id}")]
-        public UserReadDto GetUserById(int id)
-        {
-            var user = _productTypeService.GetById(id);
-            var userReadDto = _mapper.Map<UserReadDto>(user);
-
-            return userReadDto;
-        }
-
-        [HttpPut]
-        [Route("{id}")]
-        public CustomerReadDto UpdateCustomer(int id, CustomerReadDto customerReadDto)
-        {
-            var userModel = _productTypeService.GetById(id);
-            _mapper.Map(customerReadDto, userModel);
-            _productTypeService.Commit();
-
-            return customerReadDto;
-        }
-
-
-        */
-
+           
     }
 }

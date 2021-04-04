@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -15,6 +16,7 @@ namespace Core.Models
         public string Description { get; set; }
         public float TotalCost { get; set; }
         public DateTime ExecutionDate { get; set; }
+        public CampaignState CampaignState { get; set; }
 
         // foreign keys 
         [ForeignKey(nameof(Customer))]
@@ -32,8 +34,7 @@ namespace Core.Models
 
         // el relation hedhi mahech mrigla
         public virtual ICollection<BusinessType> CampaignBusinessTypes { get; set; }
-        public virtual ICollection<CampaignBusiness> CampaignBusinesses { get; set; }
-        public virtual ICollection<ProductType> ProductTypes { get; set; }
+        public virtual ICollection<CampaignBusiness> CampaignBusinesses { get; set; }        
         public virtual ICollection<Product> CampaignProducts { get; set; }  
 
         #endregion

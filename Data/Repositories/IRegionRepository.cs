@@ -7,5 +7,7 @@ namespace Data.Repositories
 {
     public interface IRegionRepository : IRepository<Region>
     {
+
+        ICollection<Region> GetListActivatedRegions();
     }
 }

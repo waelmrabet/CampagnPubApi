@@ -15,13 +15,11 @@ namespace WebApi.Builders
             
             campaign.Title = campaignCreateDto.Title;
             campaign.Goal = campaignCreateDto.Goal;
-            campaign.CustomerId = campaignCreateDto.ClientId;
+            campaign.CustomerId = campaignCreateDto.CustomerId;
             campaign.ForecastBudget = campaignCreateDto.ForecastBudget;
             campaign.RegionId = campaignCreateDto.RegionId;
-
             campaign.CampaignTowns = new HashSet<Town>();
-            campaign.CampaignBusinesses = new HashSet<CampaignBusiness>();
-            campaign.ProductTypes = new HashSet<ProductType>();
+            campaign.CampaignBusinesses = new HashSet<CampaignBusiness>();            
             campaign.ExecutionDate = campaignCreateDto.ExecutionDate;
             campaign.Description = campaignCreateDto.Description;
 

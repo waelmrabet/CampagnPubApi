@@ -10,6 +10,9 @@ namespace Core.Models
     public class CampaignBusiness
     {
 
+        [Key, Column(Order = 1)]
+        public int CampaignBusinessId { get; set; }
+        
         // properties && foreign keys
         [ForeignKey(nameof(Campaign))]        
         public int CompagnId { get; set; }
@@ -18,6 +21,9 @@ namespace Core.Models
         public int BusinessTypeId { get; set; }
         public BusinessState State { get; set; }
 
+        public int BusinessTownId { get; set; }
+
+        public Place Place { get; set; }
 
         // navigation properties
         public BusinessType BusinessType { get; set; }

@@ -24,10 +24,11 @@ namespace WebApi.Controllers
         }        
 
         [HttpGet]        
-        public List<RegionDto> getAllRegions()
+        public List<RegionReadDto> getAllRegions()
         {
-            var listRegions = _regionService.GetAll();
-            var result = _mapper.Map<List<RegionDto>>(listRegions);
+            // get only activated regions
+            var listRegions = _regionService.GetListActivatedRegions();
+            var result = _mapper.Map<List<RegionReadDto>>(listRegions);
             return result;
         }
 

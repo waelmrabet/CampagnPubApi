@@ -13,10 +13,10 @@ namespace WebApi.Profiles
         public TownProfile()
         {
             // extern to intern 
-            CreateMap<TownDto, Town>();
+            CreateMap<TownReadDto, Town>();
 
             // intern to extern
-            CreateMap<Town, TownDto>();
+            CreateMap<Town, TownReadDto>();
         }
     }
 }

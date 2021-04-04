@@ -13,12 +13,12 @@ namespace Data.Repositories.Impl
 
         public List<Town> GetFullTowns()
         {
-            return Entities.Include(x => x.Region).ToList();
+            return Entities.Where(x=> x.Activated == true).Include(x => x.Region).ToList();
         }
 
         public List<Town> GetTownsInListIds(List<int> idsList)
         {
-            var list = Entities.Where(x => idsList.Contains(x.Id)).ToList();
+            var list = Entities.Where(x => idsList.Contains(x.Id) && x.Activated == true).ToList();
             return list;
         }
     }

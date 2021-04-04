@@ -27,7 +27,7 @@ namespace BL.Services.Impl
 
         public List<Town> GetTownsByRegion(int regionId, bool fullEntity)
         {
-            var list = fullEntity ? GetFullTowns() : GetAll().ToList();
+            var list = fullEntity ? GetFullTowns() : GetAll().Where(x=> x.Activated == true).ToList();
 
             if (list != null)
                 return list.Where(x => x.RegionId == regionId).ToList();

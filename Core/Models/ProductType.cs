@@ -12,8 +12,6 @@ namespace Core.Models
         public Size Size { get; set; }
         public string Color { get; set; }
         public string Description { get; set; }
-
-        // nav properties
-        public virtual ICollection<Campaign> ProductTypeCampaigns { get; set; }
+        public int DefaultNbrProductPerBusiness { get; set; }        
     }
 }

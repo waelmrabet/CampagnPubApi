@@ -13,9 +13,9 @@ namespace WebApi.Profiles
         public RegionProfile()
         {
             // extern to intern
-            CreateMap<RegionDto, Region>();
+            CreateMap<RegionReadDto, Region>();
             // intern to extern
-            CreateMap<Region, RegionDto>();
+            CreateMap<Region, RegionReadDto>();
         }
     }
 }

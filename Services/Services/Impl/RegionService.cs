@@ -11,10 +11,16 @@ namespace BL.Services.Impl
 {
     public class RegionService : ServicePattern<Region>, IRegionService
     {
-        private readonly MyDataBaseContext _ctx;
+        private readonly IRegionRepository _regionRepo;
 
-        public RegionService(IRepository<Region> regionRepo) : base(regionRepo) { }
-               
-        
+        public RegionService(IRegionRepository regionRepo) : base(regionRepo)
+        {
+            _regionRepo = regionRepo;
+        }
+
+        public ICollection<Region> GetListActivatedRegions()
+        {
+            return _regionRepo.GetListActivatedRegions();
+        }
     }
 }

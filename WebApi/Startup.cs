@@ -36,6 +36,7 @@ namespace WebApi
             .AddCertificate();
             */
             
+            
 
             services.AddCors(options =>
             {
@@ -53,7 +54,9 @@ namespace WebApi
             CompositionRoot.injectDependencies(services, Configuration.GetConnectionString("Cnx"));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddControllers();
+            
+            services.AddControllers().AddNewtonsoftJson();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -8,11 +8,11 @@ using System.Text;
 namespace Data.Configurations
 {
     class CampaignBusinessConfigurations : IEntityTypeConfiguration<CampaignBusiness>
-    {
-        
+    {        
         public void Configure(EntityTypeBuilder<CampaignBusiness> builder)
         {
-            builder.HasKey(cb => new { cb.BusinessTypeId, cb.CompagnId });        
+            //builder.HasKey(cb => new { cb.BusinessTypeId, cb.CompagnId, cb.BusinessTownId });
+            builder.OwnsOne(x => x.Place);
         }
     }
 }

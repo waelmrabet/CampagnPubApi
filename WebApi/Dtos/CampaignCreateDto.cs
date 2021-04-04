@@ -9,7 +9,7 @@ namespace WebApi.Dtos
     {
         public string Title { get; set; }
         public string Goal { get; set; }
-        public int ClientId { get; set; }
+        public int CustomerId { get; set; }
         public float ForecastBudget { get; set; }
         public int RegionId { get; set; }
         public List<int> TownsIds { get; set; }

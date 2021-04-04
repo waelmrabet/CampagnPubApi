@@ -8,5 +8,6 @@ namespace BL.Services
 {
     public interface IBusninessTypeService : IServicePattern<BusinessType>
     {
+        ICollection<BusinessType> GetActivatedBusinessTypes();
     }
 }

@@ -7,6 +7,7 @@ using System.Text;
 namespace BL.Services
 {
     public interface IRegionService : IServicePattern<Region>
-    {     
+    {
+        ICollection<Region> GetListActivatedRegions();
     }
 }
