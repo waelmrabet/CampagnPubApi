@@ -38,8 +38,13 @@ namespace Root
             services.AddScoped<IBusninessTypeRepository, BusninessTypeRepository>();
             services.AddScoped<ICampaignRepository, CampaignRepository>();
 
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IMenuRepository, MenuRepository>();
+
             // the implementation of IPlacesRepositoy is gonna be replaced by Places Repository
             services.AddScoped<IPlacesRepository, MockPlacesRepository>();
+
+            
             #endregion
 
             #region // services injection
@@ -51,6 +56,11 @@ namespace Root
             services.AddScoped<IRegionService, RegionService>();
             services.AddScoped<IBusninessTypeService, BusninessTypeService>();
             services.AddScoped<ICampaignService, CampaignService>();
+
+            services.AddScoped<IRoleService, RoleService>();
+            
+
+
             #endregion
 
             //services.AddScoped<IUnitOfWork, UnitOfWork>();

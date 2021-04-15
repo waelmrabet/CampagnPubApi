@@ -17,6 +17,8 @@ namespace WebApi.Profiles
 
             // InternModel(Entity)  => ExterneModel (dto)
             CreateMap<User, UserReadDto>();
+
+            CreateMap<User, AuthenticatedUserDto>();
         }
     }
 }

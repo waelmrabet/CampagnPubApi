@@ -4,14 +4,16 @@ using Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(MyDataBaseContext))]
-    partial class MyDataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210414010117_AddRoletbl")]
+    partial class AddRoletbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,19 +205,10 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("AriaControls")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DataTarget")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("IconLibelle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IdAriaControls")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsParent")
@@ -375,24 +368,6 @@ namespace Data.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Core.Models.RoleMenu", b =>
-                {
-                    b.Property<int>("MenuId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Activated")
-                        .HasColumnType("bit");
-
-                    b.HasKey("MenuId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("RoleMenus");
-                });
-
             modelBuilder.Entity("Core.Models.Town", b =>
                 {
                     b.Property<int>("Id")
@@ -474,7 +449,7 @@ namespace Data.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int>("Role")
                         .HasColumnType("int");
 
                     b.Property<string>("TelNumber")
@@ -676,25 +651,6 @@ namespace Data.Migrations
                     b.Navigation("Size");
                 });
 
-            modelBuilder.Entity("Core.Models.RoleMenu", b =>
-                {
-                    b.HasOne("Core.Models.Menu", "Menu")
-                        .WithMany()
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Models.Role", "Role")
-                        .WithMany("RoleMenus")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Menu");
-
-                    b.Navigation("Role");
-                });
-
             modelBuilder.Entity("Core.Models.Town", b =>
                 {
                     b.HasOne("Core.Models.Region", "Region")
@@ -728,11 +684,6 @@ namespace Data.Migrations
                     b.Navigation("Campaigns");
 
                     b.Navigation("RegionTowns");
-                });
-
-            modelBuilder.Entity("Core.Models.Role", b =>
-                {
-                    b.Navigation("RoleMenus");
                 });
 
             modelBuilder.Entity("Core.Models.User", b =>

@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using BL.Services;
 using Core.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebApi.Dtos;
 
 namespace WebApi.Controllers
@@ -17,11 +14,42 @@ namespace WebApi.Controllers
     {
         private readonly IMapper _mapper;
         private IUserService _userService;
+        private IRoleService _roleService;
 
-        public UserController(IMapper mapper, IUserService  userService)
+        public UserController(IMapper mapper, IUserService  userService, IRoleService roleService)
         {
             _mapper = mapper;
             _userService = userService;
+            _roleService = roleService;
+        }
+
+        [HttpGet]
+        [Route("MenusByProfile/{roleId}")]
+        public List<MenuDto> GetMenusProfileAdmin(int roleId)
+        {
+            var list = this._roleService.GetMenusByRoleId(roleId).ToList();
+            var result = _mapper.Map<List<MenuDto>>(list);
+
+            return result;
+        }
+
+
+        [HttpPost]
+        [Route("Login")]
+        public AuthenticatedUserDto Login(AuthenticationSubject identity)
+        {
+            // this is gonna be changed after implementation of dot net security module
+            var id = 1;
+            var user = _userService.GetById(id);
+
+            var menus = _roleService.GetMenusByRoleId(user.RoleId).ToList();
+            var menusDto = _mapper.Map<List<MenuDto>>(menus);
+
+            var result = _mapper.Map<AuthenticatedUserDto>(user);
+            result.Menus = menusDto;
+
+            return result;
+
         }
 
         [HttpPost]

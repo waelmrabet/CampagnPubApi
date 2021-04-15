@@ -17,8 +17,10 @@ namespace Data.Repositories
         //public DbSet<Book> Books { get; set; }
         #endregion
 
-        // real object for compagn Pub App
-        
+        // real object for compagn Pub App          
+        public DbSet<Menu> Menus { get; set; }
+        public DbSet<Role> Roles { get; set; }        
+        public DbSet<RoleMenu> RoleMenus { get; set; }        
         public DbSet<User> Users { get; set; }      
         public DbSet<Customer> Customers { get; set; } 
         public DbSet<ProductType> ProductTypes { get; set; }  
@@ -38,6 +40,9 @@ namespace Data.Repositories
         { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Menu Role Configurations
+             modelBuilder.ApplyConfiguration(new RoleMenuConfigurations());
+
             // Campaign Configurations
             modelBuilder.ApplyConfiguration(new CampaignConfigurations());
                         

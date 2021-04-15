@@ -4,14 +4,16 @@ using Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(MyDataBaseContext))]
-    partial class MyDataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210414010453_AddRoleMenutbl")]
+    partial class AddRoleMenutbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,19 +205,10 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("AriaControls")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DataTarget")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("IconLibelle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IdAriaControls")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsParent")
@@ -474,7 +467,7 @@ namespace Data.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int>("Role")
                         .HasColumnType("int");
 
                     b.Property<string>("TelNumber")
@@ -685,7 +678,7 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Core.Models.Role", "Role")
-                        .WithMany("RoleMenus")
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -728,11 +721,6 @@ namespace Data.Migrations
                     b.Navigation("Campaigns");
 
                     b.Navigation("RegionTowns");
-                });
-
-            modelBuilder.Entity("Core.Models.Role", b =>
-                {
-                    b.Navigation("RoleMenus");
                 });
 
             modelBuilder.Entity("Core.Models.User", b =>
