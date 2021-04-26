@@ -8,5 +8,6 @@ namespace BL.Services
 {
     public interface IUserService : IServicePattern<User>
     {
+        void DesactivateUser(int userId, bool activate);
     }
 }

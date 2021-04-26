@@ -18,7 +18,6 @@ namespace WebApi.Controllers
 
         private readonly IMapper _mapper;
         private IProductTypeService _productTypeService;
-
         public ProductTypeController(IMapper mapper, IProductTypeService productTypeService)
         {
             _mapper = mapper;
@@ -32,6 +31,7 @@ namespace WebApi.Controllers
 
             _productTypeService.Insert(productTypeModel);
             _productTypeService.Commit();
+
             var productTypeReadDto = _mapper.Map<ProductTypeReadDto>(productTypeModel);
 
             return productTypeReadDto;
@@ -41,9 +41,19 @@ namespace WebApi.Controllers
         public List<ProductTypeReadDto> GetAllProductTypes()
         {
             var productTypes = _productTypeService.GetAll().ToList();
-            var products = _mapper.Map<List<ProductTypeReadDto>>(productTypes);
-            return products;
+            var result = _mapper.Map<List<ProductTypeReadDto>>(productTypes);
+
+            return result;
         }
-           
+
+        [HttpGet]
+        [Route("{id}")]
+        public ProductTypeReadDto GetProductTypesById(int id)
+        {
+            var productType = _productTypeService.GetById(id);
+            var result = _mapper.Map<ProductTypeReadDto>(productType);
+
+            return result;
+        }
     }
 }

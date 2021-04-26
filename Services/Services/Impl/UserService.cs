@@ -16,5 +16,11 @@ namespace BL.Services.Impl
             _userRepo = userRepo;
         }
 
+        public void DesactivateUser(int userId, bool activate)
+        {
+            var user = GetById(userId);
+            user.Activated = activate;
+            Commit();
+        }
     }
 }

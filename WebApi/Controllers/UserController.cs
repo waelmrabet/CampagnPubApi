@@ -24,6 +24,17 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("ActiverDesactivateUser/{userId}/{activate}")]
+        public List<UserReadDto> DesactivateUser(int userId, bool activate)
+        {
+            this._userService.DesactivateUser(userId, activate);
+
+            var users = _userService.GetAll().ToList();
+            var userList = _mapper.Map<List<UserReadDto>>(users);
+            return userList;
+        }
+
+        [HttpGet]
         [Route("MenusByProfile/{roleId}")]
         public List<MenuDto> GetMenusProfileAdmin(int roleId)
         {
@@ -84,13 +95,14 @@ namespace WebApi.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public CustomerReadDto UpdateCustomer(int id, CustomerReadDto customerReadDto)
+        public UserReadDto UpdateCustomer(int id, UserReadDto userReadDto)
         {
             var userModel = _userService.GetById(id);
-            _mapper.Map(customerReadDto, userModel);
+            
+            _mapper.Map(userReadDto, userModel);
             _userService.Commit();
 
-            return customerReadDto;           
+            return userReadDto;           
         }
 
 

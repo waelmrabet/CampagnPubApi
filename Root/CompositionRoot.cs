@@ -27,7 +27,6 @@ namespace Root
             services.AddScoped(typeof(IServicePattern<>), typeof(ServicePattern<>));
             #endregion
 
-
             #region // repositories injection
             services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
@@ -40,6 +39,8 @@ namespace Root
 
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IMenuRepository, MenuRepository>();
+
+            services.AddScoped<IQuoteRepository, QuoteRepository>();
 
             // the implementation of IPlacesRepositoy is gonna be replaced by Places Repository
             services.AddScoped<IPlacesRepository, MockPlacesRepository>();
@@ -58,7 +59,7 @@ namespace Root
             services.AddScoped<ICampaignService, CampaignService>();
 
             services.AddScoped<IRoleService, RoleService>();
-            
+            services.AddScoped<IQuoteService, QuoteService>();
 
 
             #endregion

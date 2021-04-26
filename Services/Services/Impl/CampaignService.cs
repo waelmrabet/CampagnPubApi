@@ -133,7 +133,7 @@ namespace BL.Services.Impl
                 campaign.ExecutionDate = campaignModif.ExecutionDate;
                 campaign.PenetraionRate = campaignModif.PenetraionRate;
                 campaign.ForecastBudget = campaignModif.ForecastBudget;
-                campaign.Description = campaignModif.Description;
+                campaign.Description = campaignModif.Description;                
 
                 // count the new value of campaign totalCost
                 campaign.TotalCost = (float)CountCampaignTotalCost(campaign);
@@ -229,10 +229,10 @@ namespace BL.Services.Impl
             {
                 // remove campaigne Business
                 campaign.CampaignBusinessTypes.Remove(businessType);
-
+                
                 // update campaignBusinesses
                 var validBusinesses = campaign.CampaignBusinesses.Where(x => x.BusinessTypeId != businessType.Id).ToList();
-                campaign.CampaignBusinesses = validBusinesses;
+                campaign.CampaignBusinesses = validBusinesses;                
 
                 campaign.TotalCost = (float)CountCampaignTotalCost(campaign);
 
@@ -265,29 +265,12 @@ namespace BL.Services.Impl
             foreach (var town in towns)
             {
                 var businesses = GetTownBusinesses(campaign, town, campaign.CampaignBusinessTypes.ToList());
-                campaign.CampaignBusinesses.ToList().AddRange(businesses);
 
-                /* old code
-                foreach (var businessType in businessTypes)
-                {
-                    var places = _placesRepository.GetPlacesList(town, businessType).ToList<Place>();
-                    foreach (var place in places)
-                    {
-                        var campaignBusiness = new CampaignBusiness()
-                        {
-                            BusinessType = businessType,
-                            Campaign = campaign,
-                            BusinessTypeId = businessType.Id,
-                            CompagnId = campaign.Id,
-                            Place = place,
-                            Photos = new HashSet<Photo>(),
-                            State = BusinessState.A_Faire,
-                            BusinessTownId = town.Id
-                        };
-                        campaign.CampaignBusinesses.Add(campaignBusiness);
-                    }
-                }          
-            */
+                foreach (var item in businesses)
+                    campaign.CampaignBusinesses.Add(item);
+
+
+                //campaign.CampaignBusinesses.ToList().AddRange(businesses);               
             }
 
         }
@@ -447,6 +430,10 @@ namespace BL.Services.Impl
 
                 // Set campaign Businesses
                 InitCampaignBusinesses(ref campaign);
+
+                campaign.TotalCost = (float) CountCampaignTotalCost(campaign);
+
+
 
                 Commit();
 

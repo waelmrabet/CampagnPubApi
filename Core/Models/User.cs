@@ -15,6 +15,7 @@ namespace Core.Models
         public int RoleId { get; set; }
         public int ClientId { get; set; }
         public string Password { get; set; }
+        public bool Activated { get; set; }
 
         // navigation properties
         public virtual ICollection<Campaign> Compagns { get; set; }

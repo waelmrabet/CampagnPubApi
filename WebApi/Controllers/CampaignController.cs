@@ -35,7 +35,6 @@ namespace WebApi.Controllers
         public bool CreateCompaignStepOne(CampaignCreateDto campaignCreateDto)
         {
             var campaign = _mapper.Map<Campaign>(campaignCreateDto);
-
             var created = _campaignService.CreateCampaign(campaign, campaignCreateDto.RegionId, campaignCreateDto.TownsIds, campaignCreateDto.BusinessTypesIds, campaignCreateDto.ProductTypeIds, campaignCreateDto.CustomerId);
 
             return created;

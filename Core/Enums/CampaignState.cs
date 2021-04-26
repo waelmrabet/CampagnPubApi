@@ -7,8 +7,9 @@ namespace Core.Enums
     public enum CampaignState
     {
         Brouillon =  1,
-        EnCours = 2,
-        Fini = 3,
-        Annulé = 4
+        ValidéParClient = 2,
+        EnCours = 3,
+        Fini = 4,
+        Annulé = 5
     }
 }

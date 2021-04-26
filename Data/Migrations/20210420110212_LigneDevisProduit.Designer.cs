@@ -4,14 +4,16 @@ using Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(MyDataBaseContext))]
-    partial class MyDataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210420110212_LigneDevisProduit")]
+    partial class LigneDevisProduit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,38 +76,6 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("businessTypes");
-                });
-
-            modelBuilder.Entity("Core.Models.BusinessTypeQuoteLine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<float>("BusinessCost")
-                        .HasColumnType("real");
-
-                    b.Property<string>("BusinessTypeCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("BusinessTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LastModifAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("QuoteId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuoteId");
-
-                    b.ToTable("BusinessTypeQuoteLines");
                 });
 
             modelBuilder.Entity("Core.Models.Campaign", b =>
@@ -401,9 +371,6 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<float>("BusinessCost")
-                        .HasColumnType("real");
-
                     b.Property<int>("CampaignId")
                         .HasColumnType("int");
 
@@ -416,20 +383,11 @@ namespace Data.Migrations
                     b.Property<DateTime>("LastModifAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("NbrBusinesses")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PenetrationRate")
-                        .HasColumnType("int");
-
                     b.Property<string>("RegionName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("State")
                         .HasColumnType("int");
-
-                    b.Property<float>("TotalCost")
-                        .HasColumnType("real");
 
                     b.Property<int>("TownsNumber")
                         .HasColumnType("int");
@@ -565,9 +523,6 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<bool>("Activated")
-                        .HasColumnType("bit");
-
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
@@ -631,17 +586,6 @@ namespace Data.Migrations
                         .HasForeignKey("CampaignsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Core.Models.BusinessTypeQuoteLine", b =>
-                {
-                    b.HasOne("Core.Models.Quote", "Quote")
-                        .WithMany("BusinessTypeQuoteLines")
-                        .HasForeignKey("QuoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Quote");
                 });
 
             modelBuilder.Entity("Core.Models.Campaign", b =>
@@ -865,8 +809,6 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Core.Models.Quote", b =>
                 {
-                    b.Navigation("BusinessTypeQuoteLines");
-
                     b.Navigation("ProductQuoteLines");
                 });
 
