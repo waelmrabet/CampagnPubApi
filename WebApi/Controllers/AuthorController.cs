@@ -40,6 +40,7 @@ namespace WebApi.Controllers
             _authorService.Insert(authorModel);
             _authorService.Commit();
             var authorReadDto = _mapper.Map<AuthorReadDto>(authorModel);
+
             return authorReadDto;
         }
 

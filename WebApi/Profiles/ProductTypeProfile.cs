@@ -16,7 +16,8 @@ namespace WebApi.Profiles
             CreateMap<SizeDto, Size>();
 
             // ExterneModel (dto) => InternModel(Entity)
-            CreateMap<ProductTypeCreateDto, ProductType>();           
+            CreateMap<ProductTypeCreateDto, ProductType>();
+            CreateMap<ProductTypeReadDto, ProductType>();
 
             // InternalModel => ExterneModel
             CreateMap<ProductType, ProductTypeReadDto>();

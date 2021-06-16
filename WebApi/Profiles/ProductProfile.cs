@@ -12,6 +12,7 @@ namespace WebApi.Profiles
     {
         public ProductProfile()
         {
+
             CreateMap<Product, ProductReadDto>();
         }
     }

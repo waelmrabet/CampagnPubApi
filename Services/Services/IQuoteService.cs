@@ -12,6 +12,8 @@ namespace BL.Services
         Quote InitialiseQuote(Campaign campaign);
         void SetProductLines(ref Quote devis, Campaign campaign);
         void SetBusinessTypesLines(ref Quote devis, Campaign campaign);
-
+        List<Quote> GetQuotesByRoleUser(int userRoleId, int clientId);
+        Quote GetQuoteFullDataById(int devisId);
+        Quote GetQuoteByCamapignId(int campaignId);
     }
 }

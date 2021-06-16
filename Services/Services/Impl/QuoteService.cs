@@ -34,7 +34,7 @@ namespace BL.Services.Impl
                 this.SetProductLines(ref devis, campaign);
                 this.SetBusinessTypesLines(ref devis, campaign);
 
-                campaign.CampaignState = CampaignState.ValidéParClient;
+                campaign.CampaignState = CampaignState.ValidéeParClient;
 
                 base.Commit();
 
@@ -51,6 +51,7 @@ namespace BL.Services.Impl
             devis.CreatedAt = DateTime.Now;
             devis.LastModifAt = DateTime.Now;
 
+            devis.CustomerId = campaign.CustomerId;
             devis.CustomerName = campaign.Customer.Name;
             devis.RegionName = campaign.Region.Name;
             devis.NbrBusinesses = campaign.CampaignBusinesses.Count();
@@ -97,23 +98,49 @@ namespace BL.Services.Impl
             //Business Type Lines
             devis.BusinessTypeQuoteLines = new List<BusinessTypeQuoteLine>();
 
-            foreach (var BusinessType in campaign.CampaignBusinessTypes)
+            foreach (var businessType in campaign.CampaignBusinessTypes)
             {
-                var BusinessTypeLine = new BusinessTypeQuoteLine()
+                var businessTypeLine = new BusinessTypeQuoteLine()
                 {
                     CreatedAt = DateTime.Now,
                     LastModifAt = DateTime.Now,
 
                     QuoteId = devis.Id,
-                    BusinessTypeId = BusinessType.Id,
-                    BusinessTypeCode = BusinessType.Code,
+                    BusinessTypeId = businessType.Id,
+                    BusinessTypeCode = businessType.Code,
                     BusinessCost = devis.BusinessCost
                 };
 
-                devis.BusinessTypeQuoteLines.Add(BusinessTypeLine);
+                var nbrBussinessTypePerCampagne = campaign.CampaignBusinesses.Where(x => x.BusinessTypeId == businessType.Id).Count();
+                businessTypeLine.NbrBusinessTypePerCampagne = nbrBussinessTypePerCampagne;
+                devis.BusinessTypeQuoteLines.Add(businessTypeLine);
             }
 
         }
 
+        public List<Quote> GetQuotesByRoleUser(int userRoleId, int customerId)
+        {
+            var list = new List<Quote>();
+
+            if (userRoleId == 1)
+                list = this.GetAll().ToList();
+            else            
+                list = _quoteRepository.GetAll().Where(x => x.CustomerId == customerId).ToList();
+
+            return list;
+        }
+
+        public Quote GetQuoteFullDataById(int devisId)
+        {
+            var quote = this._quoteRepository.GetQuoteFullDataById(devisId);
+
+            return quote;
+        }
+
+        public Quote GetQuoteByCamapignId(int campaignId)
+        {
+            var quote = _quoteRepository.GetByCampaignId(campaignId);
+            return quote;
+        }
     }
 }

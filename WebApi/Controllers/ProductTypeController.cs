@@ -15,7 +15,6 @@ namespace WebApi.Controllers
     [ApiController]
     public class ProductTypeController : ControllerBase
     {
-
         private readonly IMapper _mapper;
         private IProductTypeService _productTypeService;
         public ProductTypeController(IMapper mapper, IProductTypeService productTypeService)
@@ -54,6 +53,18 @@ namespace WebApi.Controllers
             var result = _mapper.Map<ProductTypeReadDto>(productType);
 
             return result;
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public ProductTypeReadDto GetProductTypesById(int id, ProductTypeReadDto productTypeReadDto)
+        {
+
+            var productType = _productTypeService.GetById(id);
+            productType = _mapper.Map<ProductType>(productTypeReadDto);
+            _productTypeService.Commit();
+           
+            return productTypeReadDto;
         }
     }
 }

@@ -18,6 +18,9 @@ namespace Data.Repositories
         #endregion
 
         // real object for compagn Pub App 
+        public DbSet<BillProduct> BillProducts { get; set; }
+        public DbSet<BillBusiness> BillBusinesses { get; set; } 
+        public DbSet<Bill> Bills { get; set; }  
         public DbSet<BusinessTypeQuoteLine> BusinessTypeQuoteLines { get; set; }
         public DbSet<ProductQuoteLine> productQuoteLines { get; set; }
         public DbSet<Quote> Quotes { get; set; }
@@ -42,7 +45,7 @@ namespace Data.Repositories
         public MyDataBaseContext(DbContextOptions<MyDataBaseContext> options) : base(options)
         { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        {      
             // Menu Role Configurations
              modelBuilder.ApplyConfiguration(new RoleMenuConfigurations());
 

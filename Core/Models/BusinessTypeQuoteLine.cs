@@ -12,9 +12,11 @@ namespace Core.Models
         public int BusinessTypeId { get; set; }
         public string BusinessTypeCode { get; set; }
         public float BusinessCost { get; set; }
+        public int NbrBusinessTypePerCampagne { get; set; }
 
         [ForeignKey(nameof(Quote))]
         public int QuoteId { get; set; }
-        public Quote Quote { get; set; }        
+        public Quote Quote { get; set; }
+        
     }
 }

@@ -7,8 +7,9 @@ namespace Data.Repositories
 {
     public interface ICampaignRepository : IRepository<Campaign>
     {
-
         List<Campaign> GetAllCampaigns();
         Campaign GetCampaignFullData(int idCampaign);
+        List<Campaign> SearchByCreteria(DateTime? startDate, DateTime? endDate, int? clientId, int? regionId, List<int> towns, List<int> businessTypes);
+        
     }
 }

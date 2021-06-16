@@ -3,6 +3,7 @@ using Data.Repositories;
 using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApi.Utils;
 
 namespace WebApi
 {
@@ -34,10 +36,7 @@ namespace WebApi
             services.AddAuthentication(
             CertificateAuthenticationDefaults.AuthenticationScheme)
             .AddCertificate();
-            */
-            
-            
-
+            */      
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
@@ -51,11 +50,20 @@ namespace WebApi
                     });
             });
 
-            CompositionRoot.injectDependencies(services, Configuration.GetConnectionString("Cnx"));
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-            
+            CompositionRoot.InjectDependencies(services, Configuration.GetConnectionString("Cnx"));
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());            
             services.AddControllers().AddNewtonsoftJson();
+
+            services.AddScoped<IFilesService, FilesService>();
+
+
+            /*// travail pour files upload
+            services.Configure<FormOptions>(o => {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
+            });
+            */
 
         }
 
@@ -81,6 +89,8 @@ namespace WebApi
             {
                 endpoints.MapControllers();
             });
+
+
         }
     }
 }

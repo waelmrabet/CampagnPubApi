@@ -15,7 +15,7 @@ namespace Root
     {
         public CompositionRoot() { }
 
-        public static void injectDependencies(IServiceCollection services,  string connectionString)
+        public static void InjectDependencies(IServiceCollection services,  string connectionString)
         {
             #region // databases injection
             services.AddDbContext<MyDataBaseContext>(opts => opts.UseSqlServer(connectionString, b => b.MigrationsAssembly("Data")));
@@ -36,14 +36,15 @@ namespace Root
             services.AddScoped<IRegionRepository, RegionRepository>();
             services.AddScoped<IBusninessTypeRepository, BusninessTypeRepository>();
             services.AddScoped<ICampaignRepository, CampaignRepository>();
-
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IMenuRepository, MenuRepository>();
-
             services.AddScoped<IQuoteRepository, QuoteRepository>();
+
+            services.AddScoped<IBillRepository, BillRepository>();
 
             // the implementation of IPlacesRepositoy is gonna be replaced by Places Repository
             services.AddScoped<IPlacesRepository, MockPlacesRepository>();
+            services.AddScoped<IPhotoRepository, PhotoRepository>();
 
             
             #endregion
@@ -55,12 +56,13 @@ namespace Root
             services.AddScoped<IProductTypeService, ProductTypeService>();
             services.AddScoped<ITownService, TownService>();
             services.AddScoped<IRegionService, RegionService>();
-            services.AddScoped<IBusninessTypeService, BusninessTypeService>();
+            services.AddScoped<IBusninessTypeService, BusninessTypeService>();            
             services.AddScoped<ICampaignService, CampaignService>();
-
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IQuoteService, QuoteService>();
 
+            services.AddScoped<IBillService, BillService>();
+            services.AddScoped<IPhotoService, PhotoService>();
 
             #endregion
 

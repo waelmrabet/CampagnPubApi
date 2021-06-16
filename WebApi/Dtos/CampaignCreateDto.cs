@@ -11,6 +11,7 @@ namespace WebApi.Dtos
         public string Goal { get; set; }
         public int CustomerId { get; set; }
         public float ForecastBudget { get; set; }
+        public int UserId { get; set; }
         public int RegionId { get; set; }
         public List<int> TownsIds { get; set; }
         public List<string> BusinessTypesIds { get; set; }

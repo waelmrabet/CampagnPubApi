@@ -49,6 +49,120 @@ namespace Data.Migrations
                     b.ToTable("CampaignTown");
                 });
 
+            modelBuilder.Entity("Core.Models.Bill", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("CampaignId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("FinalTotalCost")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("LastModifAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("NbrTowns")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuoteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Bills");
+                });
+
+            modelBuilder.Entity("Core.Models.BillBusiness", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("BillId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("BusinessCost")
+                        .HasColumnType("real");
+
+                    b.Property<string>("BusinessName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastModifAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Lat")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Lng")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TownName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BillId");
+
+                    b.ToTable("BillBusinesses");
+                });
+
+            modelBuilder.Entity("Core.Models.BillProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("BillId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("CostPerBusiness")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("FinalUnitPrice")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("LastModifAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("NbrProductPerBusiness")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BillId");
+
+                    b.ToTable("BillProducts");
+                });
+
             modelBuilder.Entity("Core.Models.BusinessType", b =>
                 {
                     b.Property<int>("Id")
@@ -98,6 +212,9 @@ namespace Data.Migrations
                     b.Property<DateTime>("LastModifAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("NbrBusinessTypePerCampagne")
+                        .HasColumnType("int");
+
                     b.Property<int>("QuoteId")
                         .HasColumnType("int");
 
@@ -117,6 +234,9 @@ namespace Data.Migrations
 
                     b.Property<int>("CampaignState")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("CloseDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -139,6 +259,9 @@ namespace Data.Migrations
                     b.Property<DateTime>("LastModifAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("LastUserModifId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PenetraionRate")
                         .HasColumnType("int");
 
@@ -151,7 +274,7 @@ namespace Data.Migrations
                     b.Property<float>("TotalCost")
                         .HasColumnType("real");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -181,7 +304,13 @@ namespace Data.Migrations
                     b.Property<int>("CompagnId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("LastDateModif")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserModifId")
                         .HasColumnType("int");
 
                     b.HasKey("CampaignBusinessId");
@@ -410,6 +539,9 @@ namespace Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("CustomerName")
                         .HasColumnType("nvarchar(max)");
 
@@ -633,6 +765,33 @@ namespace Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Core.Models.Bill", b =>
+                {
+                    b.HasOne("Core.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId");
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Core.Models.BillBusiness", b =>
+                {
+                    b.HasOne("Core.Models.Bill", "Bill")
+                        .WithMany("BillBusinesses")
+                        .HasForeignKey("BillId");
+
+                    b.Navigation("Bill");
+                });
+
+            modelBuilder.Entity("Core.Models.BillProduct", b =>
+                {
+                    b.HasOne("Core.Models.Bill", "Bill")
+                        .WithMany()
+                        .HasForeignKey("BillId");
+
+                    b.Navigation("Bill");
+                });
+
             modelBuilder.Entity("Core.Models.BusinessTypeQuoteLine", b =>
                 {
                     b.HasOne("Core.Models.Quote", "Quote")
@@ -658,13 +817,17 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Core.Models.User", null)
+                    b.HasOne("Core.Models.User", "User")
                         .WithMany("Compagns")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
 
                     b.Navigation("Region");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Core.Models.CampaignBusiness", b =>
@@ -844,6 +1007,11 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Region");
+                });
+
+            modelBuilder.Entity("Core.Models.Bill", b =>
+                {
+                    b.Navigation("BillBusinesses");
                 });
 
             modelBuilder.Entity("Core.Models.Campaign", b =>

@@ -22,13 +22,13 @@ namespace Core.Models
         public BusinessState State { get; set; }
         public int BusinessTownId { get; set; }
         public Place Place { get; set; }
+        public int UserModifId { get; set; }
+        public DateTime LastDateModif { get; set; }
 
         // navigation properties
         public BusinessType BusinessType { get; set; }
         public Campaign Campaign { get; set; }
-        public virtual ICollection<Photo> Photos { get; set; }
-
-       
+        public virtual ICollection<Photo> Photos { get; set; }       
 
     }
 }

@@ -8,6 +8,8 @@ namespace Core.Models
     // Devis
     public class Quote: BaseEntity
     {
+
+        public int CustomerId { get; set; }
         public string CustomerName { get; set; }
         public string RegionName { get; set; }
         public int TownsNumber { get; set; }       

@@ -23,7 +23,8 @@ namespace BL.Services.Impl
                 ICampaignRepository campaignReporepo, IRegionRepository regionRepo,
                 ITownRepository townRepo, IBusninessTypeRepository businessTypeRepo,
                 IProductTypeRepository productTypeRepo, ICustomerRepository customerRepo,
-                IPlacesRepository placesRepository) : base(campaignReporepo)
+                IPlacesRepository placesRepository
+                ) : base(campaignReporepo)
         {
             _campaignRepo = campaignReporepo;
             _regionRepo = regionRepo;
@@ -35,6 +36,7 @@ namespace BL.Services.Impl
         }
 
         #region Campaign Town Management
+
         public Campaign AddCampaignTown(int campaignId, int townId)
         {
             var campaign = GetCampaignByIdFullData(campaignId);
@@ -45,9 +47,9 @@ namespace BL.Services.Impl
                 campaign.CampaignTowns.Add(town);
                 var townBusinesses = GetTownBusinesses(campaign, town, campaign.CampaignBusinessTypes.ToList());
 
-                foreach(var business in townBusinesses)                
-                    campaign.CampaignBusinesses.Add(business);            
-                
+                foreach (var business in townBusinesses)
+                    campaign.CampaignBusinesses.Add(business);
+
                 campaign.TotalCost = (float)CountCampaignTotalCost(campaign);
 
                 Commit();
@@ -133,7 +135,7 @@ namespace BL.Services.Impl
                 campaign.ExecutionDate = campaignModif.ExecutionDate;
                 campaign.PenetraionRate = campaignModif.PenetraionRate;
                 campaign.ForecastBudget = campaignModif.ForecastBudget;
-                campaign.Description = campaignModif.Description;                
+                campaign.Description = campaignModif.Description;
 
                 // count the new value of campaign totalCost
                 campaign.TotalCost = (float)CountCampaignTotalCost(campaign);
@@ -173,6 +175,7 @@ namespace BL.Services.Impl
         #endregion
 
         #region Campaign Businesses and BusinessTypes  Management
+
         public Campaign AddCampaignBusinessType(int campaignId, string businessTypeMapCode)
         {
             var campaign = GetCampaignByIdFullData(campaignId);
@@ -229,10 +232,10 @@ namespace BL.Services.Impl
             {
                 // remove campaigne Business
                 campaign.CampaignBusinessTypes.Remove(businessType);
-                
+
                 // update campaignBusinesses
                 var validBusinesses = campaign.CampaignBusinesses.Where(x => x.BusinessTypeId != businessType.Id).ToList();
-                campaign.CampaignBusinesses = validBusinesses;                
+                campaign.CampaignBusinesses = validBusinesses;
 
                 campaign.TotalCost = (float)CountCampaignTotalCost(campaign);
 
@@ -358,7 +361,6 @@ namespace BL.Services.Impl
 
             return campaign;
         }
-
         public Campaign UpdateCampaignProduct(int campaignId, int productTypeId, int finalNbrProductPerBusiness, float finalPrice)
         {
             var campaign = _campaignRepo.GetCampaignFullData(campaignId);
@@ -379,7 +381,6 @@ namespace BL.Services.Impl
 
             return campaign;
         }
-
 
         public Campaign DeleteCampaignProduct(int campaignId, int productTypeId)
         {
@@ -402,11 +403,10 @@ namespace BL.Services.Impl
 
         }
 
-
         #endregion
 
         #region Campaign Management
-        public bool CreateCampaign(Campaign campaign, int regionId, List<int> townsIds, List<string> businessTypesIds, List<int> productTypeIds, int customerId)
+        public int CreateCampaign(Campaign campaign, int regionId, List<int> townsIds, List<string> businessTypesIds, List<int> productTypeIds, int customerId)
         {
             try
             {
@@ -422,7 +422,6 @@ namespace BL.Services.Impl
                 campaign.PenetraionRate = 100;
 
                 Insert(campaign);
-
                 Commit();
 
                 // Set campaign products
@@ -431,19 +430,17 @@ namespace BL.Services.Impl
                 // Set campaign Businesses
                 InitCampaignBusinesses(ref campaign);
 
-                campaign.TotalCost = (float) CountCampaignTotalCost(campaign);
-
-
+                campaign.TotalCost = (float)CountCampaignTotalCost(campaign);
 
                 Commit();
 
-                return true;
+                return campaign.Id;
             }
             catch (Exception ex)
             {
                 RollBack();
                 var msg = ex.Message;
-                return false;
+                return -1;
             }
 
         }
@@ -458,8 +455,108 @@ namespace BL.Services.Impl
 
             return campaigns;
         }
-        
+
+        public Campaign initDuplicatedCampaign(Campaign oldCampaign, int userId)
+        {
+            var campaign = new Campaign();
+
+            campaign.Title = oldCampaign.Title;
+            campaign.Goal = oldCampaign.Goal;
+            campaign.ForecastBudget = oldCampaign.ForecastBudget;
+            campaign.PenetraionRate = oldCampaign.PenetraionRate;
+
+            campaign.Description = oldCampaign.Description;
+            campaign.TotalCost = 0;
+            campaign.ExecutionDate = DateTime.Today.AddDays(30);
+            campaign.UserId = userId;
+
+            return campaign;
+        }
+
+        public int DuplicateCampaign(int campaignId, int userId)
+        {
+            var oldCampaign = this.GetCampaignByIdFullData(campaignId);
+
+            var townsList = oldCampaign.CampaignTowns.Select(x => x.Id).ToList();
+            var businessTypesListCodes = oldCampaign.CampaignBusinessTypes.Select(x => x.MapCode).ToList();
+            var productTypeListIds = oldCampaign.CampaignProducts.Select(x => x.ProductTypeId).ToList();
+            var regionId = oldCampaign.RegionId;
+            var customerId = oldCampaign.CustomerId;
+
+            var newCampaign = this.initDuplicatedCampaign(oldCampaign, userId);
+
+
+            var newCampagnId = this.CreateCampaign(newCampaign, regionId, townsList, businessTypesListCodes, productTypeListIds, customerId);
+
+            return newCampagnId;
+        }
+
+        public List<Campaign> SearchCampaignByCreteria(DateTime? startDate, DateTime? endDate, int? clientId, int? regionId, List<int> towns, List<int> businessTypes)
+        {
+            var campaigns = _campaignRepo.SearchByCreteria(startDate, endDate, clientId, regionId, towns, businessTypes);
+            return campaigns;
+        }
+
+        public Campaign LaunchCampaignRealization(int campaignId, int userId)
+        {
+            var campaign = this.GetCampaignByIdFullData(campaignId);
+
+            if (campaign.CampaignState == CampaignState.ValidéeParClient)
+            {
+                campaign.CampaignState = CampaignState.EnCours;
+                campaign.ExecutionDate = DateTime.Today;
+                campaign.LastModifAt = DateTime.Now;
+                campaign.LastUserModifId = userId;
+
+                Commit();
+            }
+
+            return campaign;
+        }
+
+
+        // this Method updates campaign state to Cloturée
+        public Campaign CloseCampaign(int campaignId, int userId)
+        {
+            var campaign = this.GetCampaignByIdFullData(campaignId);
+
+            // update campaign State
+            if (campaign.CampaignState == CampaignState.EnCours)
+            {
+                campaign.CampaignState = CampaignState.Clôturée;
+                campaign.ExecutionDate = DateTime.Today;
+                campaign.LastModifAt = DateTime.Now;
+                campaign.LastUserModifId = userId;
+
+                Commit();
+            }
+
+
+            return campaign;
+        }
+
+        public CampaignBusiness UpdateCampaignBusinessState(int campaignId, int newStateId, int userModifId, int campaignBusinessId)
+        {
+
+            var campaign = this.GetCampaignByIdFullData(campaignId);
+
+            if (campaign != null)
+            {
+                var business = campaign.CampaignBusinesses.Where(x => x.CampaignBusinessId == campaignBusinessId).FirstOrDefault();
+                business.State = (BusinessState)newStateId;
+                business.UserModifId = userModifId;
+                business.LastDateModif = DateTime.Now;
+
+                Commit();
+
+                return business;
+            }
+
+            return null;
+            
+        }
+
         #endregion
-                
+
     }
 }

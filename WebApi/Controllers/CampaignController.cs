@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -14,6 +15,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using WebApi.Builders;
 using WebApi.Dtos;
+using WebApi.Utils;
 
 namespace WebApi.Controllers
 {
@@ -23,21 +25,65 @@ namespace WebApi.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ICampaignService _campaignService;
-        public CampaignController(ICampaignService campaignService, IMapper mapper)
+        private readonly IBillService _billService;
+        public IFilesService _filesService { get; }
+        private readonly IPhotoService _photoService;
+
+        public CampaignController(ICampaignService campaignService, IMapper mapper, IBillService billService, IFilesService filesService, IPhotoService photoService)
         {
             _mapper = mapper;
             _campaignService = campaignService;
+            _billService = billService;
+            _filesService = filesService;
+            _photoService = photoService;
         }
 
         #region Campaign Managment
 
+        [HttpGet]
+        [Route("CloseCampaign/{campaignId}/{userId}")]
+        public int CloseCampaign(int campaignId, int userId)
+        {
+            var campaign = _campaignService.CloseCampaign(campaignId, userId);
+            var billId = this._billService.GenerateBill(campaign);
+            return billId;
+        }
+
+        [HttpGet]
+        [Route("LaunchRealization/{campaignId}/{userId}")]
+        public CampaignReadDto LaunchRealization(int campaignId, int userId)
+        {
+            var campaign = _campaignService.LaunchCampaignRealization(campaignId, userId);
+            var result = _mapper.Map<CampaignReadDto>(campaign);
+
+            return result;
+        }
+
         [HttpPost]
-        public bool CreateCompaignStepOne(CampaignCreateDto campaignCreateDto)
+        [Route("SearchCampaign/")]
+        public List<CampaignReadDto> SearchCampaign(SearchCampaignCreteriaDto creteria)
+        {
+            var campaigns = _campaignService.SearchCampaignByCreteria(creteria.StartDate, creteria.EndDate, creteria.ClientId, creteria.RegionId, creteria.Towns, creteria.BusinessTypes);
+            var result = _mapper.Map<List<CampaignReadDto>>(campaigns);
+
+            return result;
+        }
+
+        [HttpGet]
+        [Route("DuplicateCampagn/{campaignId}/{userId}")]
+        public int DuplicateCampaign(int campaignId, int userId)
+        {
+            var nveCampaignId = this._campaignService.DuplicateCampaign(campaignId, userId);
+            return nveCampaignId;
+        }
+
+        [HttpPost]
+        public int CreateCompaignStepOne(CampaignCreateDto campaignCreateDto)
         {
             var campaign = _mapper.Map<Campaign>(campaignCreateDto);
-            var created = _campaignService.CreateCampaign(campaign, campaignCreateDto.RegionId, campaignCreateDto.TownsIds, campaignCreateDto.BusinessTypesIds, campaignCreateDto.ProductTypeIds, campaignCreateDto.CustomerId);
+            var campaignId = _campaignService.CreateCampaign(campaign, campaignCreateDto.RegionId, campaignCreateDto.TownsIds, campaignCreateDto.BusinessTypesIds, campaignCreateDto.ProductTypeIds, campaignCreateDto.CustomerId);
 
-            return created;
+            return campaignId;
         }
 
         [HttpDelete]
@@ -149,6 +195,30 @@ namespace WebApi.Controllers
 
         #region Campaign Businesses and Business Types Managment
 
+        [HttpPost, DisableRequestSizeLimit]
+        [Route("UpdateCampaignBusinessState")]
+        public async Task<IActionResult> UpdateCampaignBusinessState(int campaignId, int businessCampaignId, int oldStateId, int newStateId, int userModifId)
+        {
+            try
+            {
+                var business = this._campaignService.UpdateCampaignBusinessState(campaignId, newStateId, userModifId, businessCampaignId);
+
+                if (business != null)
+                {                    
+                    var formCollection = await Request.ReadFormAsync();
+                    var files = formCollection.Files;
+                    var listPhotoNames = _filesService.UploadListFiles(files.ToList(), campaignId);
+                    _photoService.AddListPhotos(business, listPhotoNames);
+                }
+
+                return Ok() ;
+
+            }catch(Exception ex)
+            {
+                throw ex;                
+            }            
+        }
+
         [HttpDelete]
         [Route("deleteCampaignBusinessType/{campaignId}/{BusinessTypeMapCode}")]
         public CampaignReadDto DeleteCampaignBusinessType(int campaignId, string BusinessTypeMapCode)
@@ -159,7 +229,6 @@ namespace WebApi.Controllers
             return campaignDto;
         }
 
-
         [HttpGet]
         [Route("addCampaignBusinessType/{campaignId}/{businessTypeMapCode}")]
         public CampaignReadDto AddCampaignBusinessType(int campaignId, string businessTypeMapCode)
@@ -169,7 +238,6 @@ namespace WebApi.Controllers
 
             return result;
         }
-
 
         #endregion
 

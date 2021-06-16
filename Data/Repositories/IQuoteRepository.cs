@@ -5,7 +5,10 @@ using System.Text;
 
 namespace Data.Repositories
 {
-    public interface IQuoteRepository: IRepository<Quote>
+    public interface IQuoteRepository : IRepository<Quote>
     {
+        Quote GetQuoteFullDataById(int devisId);
+        Quote GetByCampaignId(int campaignId);
+        
     }
 }
