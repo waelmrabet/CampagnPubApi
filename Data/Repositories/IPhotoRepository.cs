@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Data.Repositories
 {
-    public interface IPhotoRepository: IRepository<Photo>
+    public interface IPhotoRepository : IRepository<Photo>
     {
+        public List<Photo> GetPhotoByBusiness(int businessId);
     }
 }

@@ -8,9 +8,9 @@ namespace WebApi.Utils
 {
     public interface IFilesService
     {
-        public string CreateCampaignFilesDirectoryIfNotExist(int campaignId, string parentDirectory);
+        public string CreateCampaignBusinessFilesDirectoryIfNotExist(int campaignId, int businessId);
         public string UploadFile(string path, IFormFile file);
-        public List<string> UploadListFiles(List<IFormFile> files, int campaignId);
-
+        public List<string> UploadListFiles(List<IFormFile> files, string path);
+        string GetBusinessPhotosFolderPath(int campaignId, int businessId);
     }
 }

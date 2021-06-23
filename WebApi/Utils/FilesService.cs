@@ -16,36 +16,41 @@ namespace WebApi.Utils
         {
             _configuration = configuration;
         }
-        
-        public string CreateCampaignFilesDirectoryIfNotExist(int campaignId, string parentDirectory)
+
+        public string CreateCampaignBusinessFilesDirectoryIfNotExist(int campaignId, int businessId)
         {
-            var folderName = campaignId + "_CampaignBusinessPhotos" ;
+            var parentDirectory = _configuration.GetSection("CampaignsFolder").Value;
+            var suffixFolderName = _configuration.GetSection("SuffixCampaignPhotosFolderName").Value.ToString();
+            var folderName = campaignId + suffixFolderName;
+
+            var businessFolderName = businessId + _configuration.GetSection("SuffixbusinessFolderName").Value.ToString();
             var folderPath = Path.Combine(parentDirectory, folderName);
 
-            // Determine whether the directory exists.
-            if (!Directory.Exists(folderPath))           
-                Directory.CreateDirectory(folderPath);                 
-                
-            return folderPath;         
+            // Determine whether the campaign directory exists.
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
+
+            // Determine whether the business directory exists.
+            folderPath = Path.Combine(folderPath, businessFolderName);
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
+
+            return folderPath;
 
         }
 
-        public List<string> UploadListFiles(List<IFormFile> files, int campaignId)
-        {       
-            var parentDirectory = _configuration.GetSection("BusinessPhotos").Value;
-            var filePath = CreateCampaignFilesDirectoryIfNotExist(campaignId, parentDirectory);
-
+        public List<string> UploadListFiles(List<IFormFile> files, string path)
+        {
             var listfileNames = new List<string>();
             foreach (var file in files)
             {
-                var fileName = UploadFile(filePath, file);
+                var fileName = UploadFile(path, file);
 
                 if (!String.IsNullOrEmpty(fileName))
                     listfileNames.Add(fileName);
-
             }
 
-            return listfileNames;            
+            return listfileNames;
         }
 
         public string UploadFile(string path, IFormFile file)
@@ -56,11 +61,25 @@ namespace WebApi.Utils
             if (File.Exists(filePath))
                 File.Delete(filePath);
 
-            file.CopyTo(new FileStream(filePath, FileMode.Create));            
+            file.CopyTo(new FileStream(filePath, FileMode.Create));
 
             return file.FileName;
-        }      
+        }
 
-        
+        public string GetBusinessPhotosFolderPath(int campaignId, int businessId)
+        {
+            // Get all campaigns Folder path
+            var folderPath = "";                
+            var campaignFolderName = campaignId + _configuration.GetSection("SuffixCampaignPhotosFolderName").Value;
+            var businessPhotosFolderName = businessId + _configuration.GetSection("SuffixbusinessFolderName").Value;
+
+            // get Campaign Folder path
+            folderPath = Path.Combine(folderPath, campaignFolderName);
+
+            // get BusinessFolderName
+            folderPath = Path.Combine(folderPath, businessPhotosFolderName);
+
+            return folderPath;
+        }
     }
 }

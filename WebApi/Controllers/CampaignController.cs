@@ -207,7 +207,8 @@ namespace WebApi.Controllers
                 {                    
                     var formCollection = await Request.ReadFormAsync();
                     var files = formCollection.Files;
-                    var listPhotoNames = _filesService.UploadListFiles(files.ToList(), campaignId);
+                    var path = _filesService.CreateCampaignBusinessFilesDirectoryIfNotExist(campaignId, business.CampaignBusinessId); 
+                    var listPhotoNames = _filesService.UploadListFiles(files.ToList(), path);
                     _photoService.AddListPhotos(business, listPhotoNames);
                 }
 

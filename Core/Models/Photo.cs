@@ -7,8 +7,8 @@ namespace Core.Models
     public class Photo : BaseEntity
     {
         // navigation 
-        public string ImageName { get; set; }
-        public string Description { get; set; }
+        public string ImageName { get; set; }      
+        public string FileFolder { get; set; }
 
         // navigation properties
         public CampaignBusiness CampaignBusiness { get; set; }
