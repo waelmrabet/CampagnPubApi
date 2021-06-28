@@ -15,7 +15,6 @@ namespace Data.Repositories
         void Insert(IEnumerable<T> ts);
         void Update(IEnumerable<T> ts);       
         void Commit();
-        void RollBack();
-        
+        void RollBack();       
     }
 }

@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApi.Utils;
+using WebApi.Helpers;
 
 namespace WebApi
 {
@@ -53,18 +53,14 @@ namespace WebApi
             CompositionRoot.InjectDependencies(services, Configuration.GetConnectionString("Cnx"));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());            
             services.AddControllers().AddNewtonsoftJson();
-
             services.AddScoped<IFilesService, FilesService>();
 
-
-            /*// travail pour files upload
-            services.Configure<FormOptions>(o => {
-                o.ValueLengthLimit = int.MaxValue;
-                o.MultipartBodyLengthLimit = int.MaxValue;
-                o.MemoryBufferThreshold = int.MaxValue;
-            });
-            */
-
+            // configure strongly typed settings object
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            // add authenticationservice to the DI container
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IStringCryptorDecryptor, StringCryptorDecryptor>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,13 +73,12 @@ namespace WebApi
 
             app.UseAuthentication();
             app.UseCors("AllowAll");
-
-
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
+
+            // custom jwt auth middleware
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

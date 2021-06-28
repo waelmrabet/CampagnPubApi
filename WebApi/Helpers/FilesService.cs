@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApi.Utils
+namespace WebApi.Helpers
 {
     public class FilesService : IFilesService
     {

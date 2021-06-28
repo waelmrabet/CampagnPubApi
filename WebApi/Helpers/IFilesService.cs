@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApi.Utils
+namespace WebApi.Helpers
 {
     public interface IFilesService
     {

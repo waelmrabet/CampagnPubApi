@@ -5,22 +5,29 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using WebApi.Dtos;
+using WebApi.Helpers;
 
 namespace WebApi.Controllers
 {
+
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IStringCryptorDecryptor _stringCryptorDecryptor;
         private readonly IMapper _mapper;
         private IUserService _userService;
         private IRoleService _roleService;
+        private ICustomerService _customerService;
 
-        public UserController(IMapper mapper, IUserService  userService, IRoleService roleService)
+        public UserController(IMapper mapper, IUserService  userService,ICustomerService customerService, IStringCryptorDecryptor stringCryptorDecryptor, IRoleService roleService)
         {
             _mapper = mapper;
             _userService = userService;
             _roleService = roleService;
+            _stringCryptorDecryptor = stringCryptorDecryptor;
+            _customerService = customerService;
         }
 
         [HttpGet]
@@ -44,29 +51,12 @@ namespace WebApi.Controllers
             return result;
         }
 
-
-        [HttpPost]
-        [Route("Login")]
-        public AuthenticatedUserDto Login(AuthenticationSubject identity)
-        {
-            // this is gonna be changed after implementation of dot net security module
-            var id = 1;
-            var user = _userService.GetById(id);
-
-            var menus = _roleService.GetMenusByRoleId(user.RoleId).ToList();
-            var menusDto = _mapper.Map<List<MenuDto>>(menus);
-
-            var result = _mapper.Map<AuthenticatedUserDto>(user);
-            result.Menus = menusDto;
-
-            return result;
-
-        }
-
         [HttpPost]
         public UserReadDto AddUser(UserCreateDto userCreateDto)
         {
             var userModel = _mapper.Map<User>(userCreateDto);
+
+            userModel.CryptedPassword = _stringCryptorDecryptor.EncryptString(userCreateDto.Password);
 
             _userService.Insert(userModel);
             _userService.Commit();
@@ -74,7 +64,7 @@ namespace WebApi.Controllers
 
             return userReadDto;
         }
-
+                
         [HttpGet]
         public List<UserReadDto> GetAllUsers()
         {
@@ -87,8 +77,10 @@ namespace WebApi.Controllers
         [Route("{id}")]
         public UserReadDto GetUserById(int id)
         {
-            var user = _userService.GetById(id);
+            var user = _userService.GetById(id);            
             var userReadDto = _mapper.Map<UserReadDto>(user);
+
+            userReadDto.ClientName = userReadDto.ClientId == 2 ? _customerService.GetById(userReadDto.ClientId).Name : "";
 
             return userReadDto;
         }
@@ -104,7 +96,6 @@ namespace WebApi.Controllers
 
             return userReadDto;           
         }
-
 
     }
 }

@@ -9,9 +9,9 @@ namespace BL.Services.Impl
 {
     public class UserService : ServicePattern<User>, IUserService
     {
-        private readonly IRepository<User> _userRepo;
+        private readonly IUserRepository _userRepo;
 
-        public UserService(IRepository<User> userRepo) : base(userRepo)
+        public UserService(IUserRepository userRepo) : base(userRepo)
         {
             _userRepo = userRepo;
         }
@@ -21,6 +21,12 @@ namespace BL.Services.Impl
             var user = GetById(userId);
             user.Activated = activate;
             Commit();
+        }
+
+        public User GetUserByUserName(string login)
+        {
+            var user = _userRepo.GetUserByUserName(login);
+            return user;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +16,9 @@ namespace WebApi.Dtos
         public bool Activated { get; set; }
         public int RoleId { get; set; }
         public int ClientId { get; set; }
+        public string ClientName { get; set; }
+
+        [JsonIgnore]
         public string Password { get; set; }
     }
 }

@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Data.Repositories
 {
-    public interface IUserRepository : IRepository<User> 
+    public interface IUserRepository : IRepository<User>
     {
+        User GetUserByUserName(string login);
     }
 }

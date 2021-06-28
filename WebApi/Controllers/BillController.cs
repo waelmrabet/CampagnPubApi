@@ -11,6 +11,7 @@ using WebApi.Dtos;
 
 namespace WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BillController : ControllerBase
@@ -34,7 +35,7 @@ namespace WebApi.Controllers
 
             return result;
         }
-
+    
         [HttpGet]
         [Route("CampaignBill/{campaignId}")]
         public BillReadDto CampaignBill(int campaignId)
@@ -44,9 +45,6 @@ namespace WebApi.Controllers
 
             return result;
         }
-
-
-
 
     }
 }

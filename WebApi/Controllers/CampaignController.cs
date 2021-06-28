@@ -15,10 +15,11 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using WebApi.Builders;
 using WebApi.Dtos;
-using WebApi.Utils;
+using WebApi.Helpers;
 
 namespace WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CampaignController : ControllerBase
