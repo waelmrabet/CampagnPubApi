@@ -53,7 +53,7 @@ namespace WebApi
             CompositionRoot.InjectDependencies(services, Configuration.GetConnectionString("Cnx"));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());            
             services.AddControllers().AddNewtonsoftJson();
-            services.AddScoped<IFilesService, FilesService>();
+           
 
             // configure strongly typed settings object
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));

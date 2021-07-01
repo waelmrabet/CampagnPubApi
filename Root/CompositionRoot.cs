@@ -27,8 +27,7 @@ namespace Root
             services.AddScoped(typeof(IServicePattern<>), typeof(ServicePattern<>));
             #endregion
 
-            #region // repositories injection
-            services.AddScoped<IAuthorRepository, AuthorRepository>();
+            #region // repositories injection           
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
@@ -50,7 +49,7 @@ namespace Root
             #endregion
 
             #region // services injection
-            services.AddScoped<IAuthorService, AuthorService>();
+           
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProductTypeService, ProductTypeService>();
@@ -63,6 +62,7 @@ namespace Root
 
             services.AddScoped<IBillService, BillService>();
             services.AddScoped<IPhotoService, PhotoService>();
+            services.AddScoped<IFilesService, FilesService>();
 
             #endregion
 
