@@ -18,7 +18,6 @@ namespace BL.Services.Impl
         private readonly IProductTypeRepository _productTypeRepo;
         private readonly ICustomerRepository _customerRepo;
         private readonly IPlacesRepository _placesRepository;
-
         public CampaignService(
                 ICampaignRepository campaignReporepo, IRegionRepository regionRepo,
                 ITownRepository townRepo, IBusninessTypeRepository businessTypeRepo,

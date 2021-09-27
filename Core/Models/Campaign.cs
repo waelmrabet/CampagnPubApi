@@ -36,9 +36,7 @@ namespace Core.Models
         public User User { get; set; }
         public Customer Customer { get; set; }
         public Region Region { get; set; }
-        public virtual ICollection<Town> CampaignTowns { get; set; }
-
-        // el relation hedhi mahech mrigla
+        public virtual ICollection<Town> CampaignTowns { get; set; }        
         public virtual ICollection<BusinessType> CampaignBusinessTypes { get; set; }
         public virtual ICollection<CampaignBusiness> CampaignBusinesses { get; set; }        
         public virtual ICollection<Product> CampaignProducts { get; set; }
