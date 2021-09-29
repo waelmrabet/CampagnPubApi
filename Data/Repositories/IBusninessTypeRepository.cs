@@ -10,5 +10,7 @@ namespace Data.Repositories
 
         ICollection<BusinessType> GetActivatedBusinessTypes();
         ICollection<BusinessType> GetBusinessInListMapCodes(List<string> businessTypesIds);
+
+// test
     }
 }
