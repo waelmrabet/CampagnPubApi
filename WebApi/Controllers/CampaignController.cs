@@ -46,8 +46,9 @@ namespace WebApi.Controllers
         public int CloseCampaign(int campaignId, int userId)
         {
             var campaign = _campaignService.CloseCampaign(campaignId, userId);
-            var billId = this._billService.GenerateBill(campaign);
-            return billId;
+            // la generation des factures est automatique juste apres la validation de devis
+            //var billId = this._billService.GenerateBill(campaign);
+            return campaignId;
         }
 
         [HttpGet]

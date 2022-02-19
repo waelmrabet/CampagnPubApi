@@ -21,26 +21,25 @@ namespace BL.Services.Impl
         }
 
         public void UpdateBillBusinessesAndProducts(ref Bill bill, Campaign campaign)
-        {            
+        {
             #region set bill business list
             var billBusinessList = new List<BillBusiness>();
             foreach (var item in campaign.CampaignBusinesses)
             {
-                if (item.State == BusinessState.Fini)
-                {
-                    var billBusiness = new BillBusiness();
 
-                    billBusiness.BusinessName = item.Place.Name;
-                    billBusiness.Lat = item.Place.Lat.ToString();
-                    billBusiness.Lng = item.Place.Lng.ToString();
+                var billBusiness = new BillBusiness();
 
-                    billBusiness.TownName = campaign.CampaignTowns.Where(x => x.Id == item.BusinessTownId).FirstOrDefault().City;
-                    billBusiness.BusinessTypeName = campaign.CampaignBusinessTypes.Where(x => x.Id == item.BusinessTypeId).FirstOrDefault().Code;
-                    billBusiness.BusinessCost = this.CountBusinessCost(campaign.CampaignProducts.ToList());
+                billBusiness.BusinessName = item.Place.Name;
+                billBusiness.Lat = item.Place.Lat.ToString();
+                billBusiness.Lng = item.Place.Lng.ToString();
 
-                    billBusinessList.Add(billBusiness);
-                    bill.FinalTotalCost += billBusiness.BusinessCost;
-                }
+                billBusiness.TownName = campaign.CampaignTowns.Where(x => x.Id == item.BusinessTownId).FirstOrDefault().City;
+                billBusiness.BusinessTypeName = campaign.CampaignBusinessTypes.Where(x => x.Id == item.BusinessTypeId).FirstOrDefault().Code;
+                billBusiness.BusinessCost = this.CountBusinessCost(campaign.CampaignProducts.ToList());
+
+                billBusinessList.Add(billBusiness);
+                bill.FinalTotalCost += billBusiness.BusinessCost;
+
 
             }
 
@@ -50,7 +49,7 @@ namespace BL.Services.Impl
             #endregion
 
             #region set product bill list
-           
+
             var productBillList = new List<BillProduct>();
             foreach (var item in campaign.CampaignProducts)
             {
@@ -69,7 +68,7 @@ namespace BL.Services.Impl
             bill.BillProducts = productBillList;
 
             #endregion
-                       
+
             Commit();
 
         }
@@ -83,7 +82,7 @@ namespace BL.Services.Impl
                 businessCost += (float)product.FinalUnitPrice * product.NbrProductPerBusiness;
             }
             return businessCost;
-        }       
+        }
         public Bill InitializeBill(Campaign campaign)
         {
             var bill = new Bill()
@@ -124,6 +123,6 @@ namespace BL.Services.Impl
             return bill;
         }
 
-        
+
     }
 }

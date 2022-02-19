@@ -21,6 +21,8 @@ namespace BL.Services.Impl
         {
             var parentDirectory = _configuration.GetSection("CampaignsFolder").Value;
             var suffixFolderName = _configuration.GetSection("SuffixCampaignPhotosFolderName").Value.ToString();
+            
+            
             var folderName = campaignId + suffixFolderName;
 
             var businessFolderName = businessId + _configuration.GetSection("SuffixbusinessFolderName").Value.ToString();

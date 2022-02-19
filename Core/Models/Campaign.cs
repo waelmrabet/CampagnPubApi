@@ -29,6 +29,8 @@ namespace Core.Models
         [ForeignKey(nameof(Region))]
         public int RegionId { get; set; }
 
+        public int LastUserModifId { get; set; }
+
         #endregion
 
         #region navigation properties 
@@ -40,7 +42,7 @@ namespace Core.Models
         public virtual ICollection<BusinessType> CampaignBusinessTypes { get; set; }
         public virtual ICollection<CampaignBusiness> CampaignBusinesses { get; set; }        
         public virtual ICollection<Product> CampaignProducts { get; set; }
-        public int LastUserModifId { get; set; }
+        
 
         #endregion
 
