@@ -15,12 +15,10 @@ namespace WebApi.Controllers
     public class AuthenticationController : ControllerBase
     {       
         private readonly IAuthenticationService _authService;
-        private readonly IStringCryptorDecryptor _stringCryptorDecryptor;
-
-        public AuthenticationController(IAuthenticationService authenticationService, IStringCryptorDecryptor stringCryptorDecryptor)
+       
+        public AuthenticationController(IAuthenticationService authenticationService)
         {           
-            _authService = authenticationService;
-            _stringCryptorDecryptor = stringCryptorDecryptor;
+            _authService = authenticationService;           
         }
 
         [HttpPost("authenticate")]

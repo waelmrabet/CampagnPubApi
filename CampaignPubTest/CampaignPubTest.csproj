@@ -22,8 +22,11 @@
 
   <ItemGroup>
     <Folder Include="BLTests\ServicesTests\" />
-    <Folder Include="DataTests\RepositoriesTests\" />
-    <Folder Include="WebApiTests\ContorllerTests\" />
+    <Folder Include="WebApiTests\HelpersTests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebApi\WebApi.csproj" />
   </ItemGroup>
 
 </Project>
