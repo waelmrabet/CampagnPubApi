@@ -11,10 +11,10 @@ namespace BL.ServicePattern
         IEnumerable<T> GetAll();
         T GetById(int id);
         void Insert(T entity);
+        void Insert(IEnumerable<T> ts);
         void Update(T entity);
+        void Update(IEnumerable<T> ts);
         void Delete(int id);
-        void InsertAll(IEnumerable<T> ts);
-        void UpdateAll(IEnumerable<T> ts);
         void Commit();
         void RollBack();
     }

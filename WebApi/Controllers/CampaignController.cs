@@ -46,9 +46,8 @@ namespace WebApi.Controllers
         public int CloseCampaign(int campaignId, int userId)
         {
             var campaign = _campaignService.CloseCampaign(campaignId, userId);
-            // la generation des factures est automatique juste apres la validation de devis
-            //var billId = this._billService.GenerateBill(campaign);
-            return campaignId;
+            // la generation des factures est automatique juste aprés la validation de devis            
+            return campaign.Id;
         }
 
         [HttpGet]
@@ -216,9 +215,9 @@ namespace WebApi.Controllers
 
                 return Ok() ;
 
-            }catch(Exception ex)
+            }catch(Exception)
             {
-                throw ex;                
+                return StatusCode(500);
             }            
         }
 

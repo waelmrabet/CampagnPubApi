@@ -9,16 +9,14 @@ namespace Data.Repositories.Impl
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         protected readonly MyDataBaseContext context;
-        private DbSet<T> _entities;
+        private readonly DbSet<T> _entities;
         public DbSet<T> Entities
         {
             get
             {
                 return this._entities;
             }
-        }        
-
-        string errorMessage = string.Empty;
+        }
 
         public void Commit()
         {
@@ -46,37 +44,40 @@ namespace Data.Repositories.Impl
         }
         public void Insert(T entity)
         {
-            if (entity == null) throw new ArgumentNullException("entity");
+            var errorMessage = "entity";
+            if (entity == null) throw new ArgumentNullException(errorMessage);
 
             _entities.Add(entity);
-            //context.SaveChanges();
+            
         }
-        public void Update(T entity)
-        {
-            if (entity == null) throw new ArgumentNullException("entity");
-            //context.SaveChanges();
-        }
-        public void Delete(int id)
-        {
-            //if (id == null) throw new ArgumentNullException("entity");
-
-            T entity = _entities.SingleOrDefault(s => s.Id == id);
-            _entities.Remove(entity);
-            //context.SaveChanges();
-        }
-
         public void Insert(IEnumerable<T> ts)
         {
-            if (ts == null) throw new ArgumentNullException("TEntities");
+            var errorMessage = "TEntities";
+            if (ts == null) throw new ArgumentNullException(errorMessage);
 
             _entities.AddRange(ts);
         }
-
+        public void Update(T entity)
+        {
+            var errorMessage = "entity";
+            if (entity == null) throw new ArgumentNullException(errorMessage);            
+        }                
         public void Update(IEnumerable<T> ts)
         {
-            if (ts == null) throw new ArgumentNullException("TEntities");
+            var errorMessage = "TEntities";
+            if (ts == null) throw new ArgumentNullException(errorMessage);
 
             _entities.UpdateRange(ts);
         }
+        public void Delete(int id)
+        {
+            var errorMessage = "entity";
+            if (id == 0) throw new ArgumentNullException(errorMessage);
+
+            T entity = _entities.SingleOrDefault(s => s.Id == id);
+            _entities.Remove(entity);            
+        }
+
+       
     }
 }

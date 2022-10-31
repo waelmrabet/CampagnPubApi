@@ -10,10 +10,10 @@ namespace Data.Repositories
         IEnumerable<T> GetAll();
         T GetById(int id);
         void Insert(T entity);
-        void Update(T entity);
-        void Delete(int id);
         void Insert(IEnumerable<T> ts);
-        void Update(IEnumerable<T> ts);       
+        void Update(T entity);
+        void Update(IEnumerable<T> ts);
+        void Delete(int id); 
         void Commit();
         void RollBack();       
     }

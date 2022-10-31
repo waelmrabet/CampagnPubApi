@@ -45,7 +45,7 @@ namespace BL.ServicePattern
             _repo.Insert(entity);
         }
 
-        public void InsertAll(IEnumerable<T> ts)
+        public void Insert(IEnumerable<T> ts)
         {
             _repo.Insert(ts);
         }
@@ -55,7 +55,7 @@ namespace BL.ServicePattern
             _repo.Update(entity);
         }
 
-        public void UpdateAll(IEnumerable<T> ts)
+        public void Update(IEnumerable<T> ts)
         {
             _repo.Update(ts);
         }
